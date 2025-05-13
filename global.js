@@ -135,7 +135,7 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
         .text(d => d.name)
         .style("font-size", "12px");
 }
-function createSlider(maxDay = 29) {
+function createSlider(maxDay = 13) {
     const width = 800;
     const height = 60;
 
