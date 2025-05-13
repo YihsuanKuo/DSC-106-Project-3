@@ -24,10 +24,10 @@ async function loadAndPlotHourly(dayNum = 0) {
     });
 
     result.columns = ['hour', ...ids, 'fe_mean', 'ma_mean'];
-    drawHourlyLinePlot(result, 'hour');
+    drawHourlyLinePlot(result, 'hour', dayNum);
 }
 
-function drawHourlyLinePlot(data, xKey) {
+function drawHourlyLinePlot(data, xKey, dayNum) {
     const columns = data.columns;
     const femaleCols = columns.filter(c => /^f\d+$/.test(c));
     const maleCols = columns.filter(c => /^m\d+$/.test(c));
@@ -89,8 +89,8 @@ function drawHourlyLinePlot(data, xKey) {
     d3.select("#chart").html("");
 
     const svg = d3.select("#chart").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
 
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -110,6 +110,14 @@ function drawHourlyLinePlot(data, xKey) {
         .attr("fill", "none")
         .attr("stroke-width", 1.5);
 
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text(`Average Hourly Temperature – Day ${dayNum+1}`);
+
     const legend = svg.selectAll(".legend")
         .data(series.filter(d => d.name))
         .enter()
@@ -128,5 +136,4 @@ function drawHourlyLinePlot(data, xKey) {
         .style("font-size", "12px");
 }
 
-// Run it for Day 1
-loadAndPlotHourly(4);
+loadAndPlotHourly(13);
