@@ -194,5 +194,5 @@ function createSlider(maxDay = 29) {
     handle.attr("cx", x(13));
     label.attr("x", x(13));
 }
-
+createSlider();
 loadAndPlotHourly(13);
