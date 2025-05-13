@@ -135,5 +135,64 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
         .text(d => d.name)
         .style("font-size", "12px");
 }
+function createSlider(maxDay = 29) {
+    const width = 800;
+    const height = 60;
+
+    const svg = d3.select("#slider")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const margin = { left: 60, right: 60 };
+    const sliderWidth = width - margin.left - margin.right;
+
+    const x = d3.scaleLinear()
+        .domain([0, maxDay])
+        .range([0, sliderWidth])
+        .clamp(true);
+
+    const slider = svg.append("g")
+        .attr("class", "slider")
+        .attr("transform", `translate(${margin.left}, ${height / 2})`);
+
+   
+    slider.append("line")
+        .attr("class", "track")
+        .attr("x1", x.range()[0])
+        .attr("x2", x.range()[1])
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", 10)
+        .attr("stroke-linecap", "round");
+
+  
+    const handle = slider.append("circle")
+        .attr("class", "handle")
+        .attr("r", 8)
+        .attr("fill", "#666");
+
+    
+    const label = slider.append("text")
+        .attr("text-anchor", "middle")
+        .attr("dy", -15)
+        .text("Day 14");
+
+  
+    const drag = d3.drag()
+        .on("start drag", (event) => {
+            const pos = x.invert(event.x); // ← no margin subtraction
+            const clamped = Math.max(0, Math.min(maxDay, pos));
+            const dayNum = Math.round(clamped);
+            handle.attr("cx", x(dayNum));
+            label.attr("x", x(dayNum)).text(`Day ${dayNum + 1}`);
+            loadAndPlotHourly(dayNum);
+        });
+
+    slider.call(drag);
+
+  
+    handle.attr("cx", x(13));
+    label.attr("x", x(13));
+}
 
 loadAndPlotHourly(13);
