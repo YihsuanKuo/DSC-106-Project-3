@@ -1,7 +1,20 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
+let allData = null;
+let currentDay = null;
+
+
+async function loadCSVOnce() {
+    if (!allData) {
+        allData = await d3.csv('cleaned_data/all_temp.csv', d3.autoType);
+    }
+}
+
 async function loadAndPlotHourly(dayNum = 0) {
-    const raw = await d3.csv('cleaned_data/all_temp.csv', d3.autoType);
+    await loadCSVOnce();
+    if (dayNum === currentDay) return;
+    currentDay = dayNum;
+    const raw = allData;
     const filtered = raw.filter(d => d.day === dayNum);
 
     const groupByHour = d3.groups(filtered, d => d.hour);
@@ -135,6 +148,13 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
         .text(d => d.name)
         .style("font-size", "12px");
 }
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
 function createSlider(maxDay = 13) {
     const width = 800;
     const height = 60;
@@ -177,7 +197,7 @@ function createSlider(maxDay = 13) {
         .attr("dy", -15)
         .text("Day 14");
 
-  
+    const debouncedLoad = debounce(loadAndPlotHourly, 100);
     const drag = d3.drag()
         .on("start drag", (event) => {
             const pos = x.invert(event.x); // ← no margin subtraction
@@ -185,7 +205,7 @@ function createSlider(maxDay = 13) {
             const dayNum = Math.round(clamped);
             handle.attr("cx", x(dayNum));
             label.attr("x", x(dayNum)).text(`Day ${dayNum + 1}`);
-            loadAndPlotHourly(dayNum);
+            debouncedLoad(dayNum);
         });
 
     slider.call(drag);
