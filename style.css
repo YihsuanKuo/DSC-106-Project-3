@@ -172,7 +172,7 @@ img {
     font-family: 'Segoe UI', sans-serif;
   }
 
-  /* Optional: hover effect for the handle */
+
   .slider .handle:hover {
     fill: #555;
   }
