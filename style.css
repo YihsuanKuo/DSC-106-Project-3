@@ -177,3 +177,7 @@ svg {
   fill: #555;
 }
 
+#tooltip {
+  z-index: 100;
+  transition: opacity 0.2s ease;
+}

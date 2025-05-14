@@ -122,6 +122,34 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
         .attr("stroke", d => d.color)
         .attr("fill", "none")
         .attr("stroke-width", 1.5);
+        
+    const tooltip = d3.select("#tooltip");
+
+    // Add points and interactivity
+    series.forEach(s => {
+        svg.selectAll(`.point-${s.group.replace(/\s/g, '-')}`)
+            .data(s.values)
+            .enter()
+            .append("circle")
+            .attr("class", `point-${s.group}`)
+            .attr("cx", d => x(d.x))
+            .attr("cy", d => y(d.y))
+            .attr("r", 3)
+            .attr("fill", s.color)
+            .on("mouseover", function (event, d) {
+                d3.select(this).attr("r", 6);
+                tooltip.style("visibility", "visible")
+                    .html(`<strong>${s.name || s.group}</strong><br>Hour: ${d.x}<br>Temp: ${d.y.toFixed(2)}`);
+            })
+            .on("mousemove", function (event) {
+                tooltip.style("top", (event.pageY - 40) + "px")
+                    .style("left", (event.pageX + 10) + "px");
+            })
+            .on("mouseout", function () {
+                d3.select(this).attr("r", 3);
+                tooltip.style("visibility", "hidden");
+            });
+    });
 
     svg.append("text")
         .attr("x", width / 2)
