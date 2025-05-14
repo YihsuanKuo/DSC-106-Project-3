@@ -81,7 +81,7 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
 
     const width = 800;
     const height = 400;
-    const margin = {top: 40, right: 100, bottom: 40, left: 60};
+    const margin = {top: 80, right: 100, bottom: 40, left: 60};
 
     const x = d3.scaleLinear()
         .domain([0, 23])
@@ -105,6 +105,45 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
     .attr("viewBox", `0 0 ${width} ${height}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 
+    // Midpoint (hour 11.5)
+    const midHour = 12;
+    const midX = x(midHour);
+
+    // Shaded left area
+    svg.append("rect")
+        .attr("x", margin.left)
+        .attr("y", margin.top)
+        .attr("width", midX - margin.left)
+        .attr("height", height - margin.top - margin.bottom)
+        .attr("fill", "rgba(0, 0, 0, 0.05)");
+
+    // Vertical line at midpoint
+    svg.append("line")
+        .attr("x1", midX)
+        .attr("x2", midX)
+        .attr("y1", margin.top)
+        .attr("y2", height - margin.bottom)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4 2");
+
+
+    svg.append("text")
+        .attr("x", margin.left + (midX - margin.left) / 2)
+        .attr("y", margin.top - 10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "black")
+        .style("font-size", "0.85rem")
+        .text("lights off");
+    
+    svg.append("text")
+        .attr("x", midX + (width - margin.right - midX) / 2)
+        .attr("y", margin.top - 10)  // match the vertical position of the left label
+        .attr("text-anchor", "middle")
+        .attr("fill", "black")
+        .style("font-size", "0.85rem")
+        .text("lights on");
+
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x).ticks(24));
@@ -122,7 +161,7 @@ function drawHourlyLinePlot(data, xKey, dayNum) {
         .attr("stroke", d => d.color)
         .attr("fill", "none")
         .attr("stroke-width", 1.5);
-        
+
     const tooltip = d3.select("#tooltip");
 
     // Add points and interactivity
