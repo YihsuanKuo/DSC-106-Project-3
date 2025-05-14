@@ -25,12 +25,17 @@
       <section>
         <h2>Final Reflection</h2>
 
-        <p>[WRITE FINAL REFLECTION PARAGRAPHS HERE.]</p>
+        <p>We chose our visual encodings and interaction techniques based on clarity, usability, and the ability to reveal meaningful patterns in the data without overwhelming the viewer. For the visual design, we used a continuous datetime scale on the x-axis to preserve fine-grained, hour-by-hour resolution across the dataset, rather than flattening temporal detail into arbitrary daily bins. The y-axis is a linear scale, ideal for showing the relatively narrow ~2 °C range in core temperature. To differentiate sex, we chose the generic color which is blue for males and pink for females. We also added alternating shaded bands (pale yellow and muted purple) to represent the 12-hour light/dark cycle, giving necessary circadian context without adding clutter.
+On the interaction side, we selected a 14-day slider window because early static charts that displayed all the data at the same time were too dense to interpret. The slider offers a focused, navigable view that allows readers to scroll through the data but always see the same time in a day, which keeps patterns legible. We considered alternatives like small multiples (e.g., separate plots by week or sex), but those broke temporal continuity and made comparison harder. A dropdown to select fixed intervals also felt too rigid, limiting exploratory flow. The 14-day window strikes a balance: it’s long enough to reveal repeated cycles, but short enough to avoid overwhelming the viewer.
+</p>
       </section>
       <section>
         <h2>Development Process</h2>
 
-        <p>[Developmental Process]</p>
+        <p>Our team spent approximately 10 hours developing the application, dividing the work according to each member’s strengths. Michael handled the slider and coded the logic for shading the background to reflect alternating light/dark periods, which was one of the most time-consuming challenges due to its precision and need for smooth integration with Matplotlib. Jiahe led the exploratory visualization phase, testing multiple plot types including heatmaps and faceted views before we settled on the interactive 14-day window design. Tony focused on data wrangling, web presentation, and embedding the final visualizations into a clean, responsive GitHub Pages site using HTML and CSS. Eric also helped clean and wrangle the data while helping everyone on their parts, he also made the video for our checkpoint. 
+
+Initially, our goal was to highlight patterns in mouse core temperature, particularly comparing males and females, given prior information suggesting that female mice typically have higher core temperatures due to anatomical differences. We began with exploratory data analysis to investigate this, but beyond some obvious patterns, we didn’t uncover strong gender-based trends. That led us to shift focus from proving a hypothesis to building an informative, flexible visualization. The idea of using a time slider emerged from this pivot, allowing users to explore temperature trends across different days interactively. We kept our original design elements, including gender-based temperature comparisons and the alternating light/dark background, to help users see how body temperature varies not only by gender but also in relation to the time of day and the light cycle.
+</p>
         <figure>
           <img src="images/mouse graph.png" alt="" />
           <figcaption>Female vs Male core body temps</figcaption>
