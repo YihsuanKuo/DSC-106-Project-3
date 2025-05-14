@@ -139,3 +139,41 @@ img {
   height: auto;
   display: block;
 }
+  #slider {
+    margin: 20px auto;
+    max-width: 800px;
+  }
+
+  .slider line.track {
+    stroke: #ddd;
+    stroke-width: 8;
+    stroke-linecap: round;
+  }
+
+  .slider .handle {
+    fill: #333;
+    stroke: white;
+    stroke-width: 2px;
+    cursor: grab;
+  }
+
+  .slider .handle:active {
+    cursor: grabbing;
+  }
+
+  .slider text {
+    font-family: sans-serif;
+    font-size: 14px;
+    fill: #333;
+    pointer-events: none;
+  }
+
+  svg {
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  /* Optional: hover effect for the handle */
+  .slider .handle:hover {
+    fill: #555;
+  }
+
